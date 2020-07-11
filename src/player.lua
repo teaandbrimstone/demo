@@ -95,14 +95,18 @@ function handleProjectiles(dt)
             mouseX, mouseY = love.mouse.getPosition()
             offsetX, offsetY = 0, 0
 
+            -- Calculates the angle that the mouse is making with the fire i.e. how much the fire needs to revolve
+            -- around the player to get to the mouse
             angle = math.atan2(p.collider:getY() - player.collider:getY(),
                                p.collider:getX() - player.collider:getX()) -
                         math.atan2(mouseY - 360, mouseX - 640)
 
+            -- Rounds for floating point imprecision
             if (angle > 0 and angle < 0.01) or (angle < 0 and angle > -0.01) then
                 angle = 0
             end
 
+            -- Finds minimum angle, since atan calculation only considers one revolution direction
             if math.abs(angle) > math.pi then
                 if angle < 0 then
                     angle = angle + 2 * math.pi
@@ -111,6 +115,7 @@ function handleProjectiles(dt)
                 end
             end
 
+            -- Revolves the fire counterclockwise or clockwise depending on angle
             if angle > 0 then
                 sin = math.sin(0.01)
                 cos = math.cos(0.01)
@@ -133,6 +138,7 @@ function handleProjectiles(dt)
                 offsetY = diffY - (diffX * sin + diffY * cos)
             end
             
+            -- Fire needs to follow player dx and dy and then offset is caused by mouse movement
             p.collider:setLinearVelocity(player.dx * 50 + offsetX * 150,
                                          player.dy * 50 + offsetY * 150)
         end

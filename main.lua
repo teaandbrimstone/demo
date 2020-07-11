@@ -26,6 +26,8 @@ function love.draw()
     cam:attach()
     love.graphics.draw(background, 0, 0)
 
+
+    -- Draw order, use an array + sort based on position once more things are rendered
     if (player.collider:getY() > dummy.collider:getY()) then
         dummy:draw()
         player:draw()
